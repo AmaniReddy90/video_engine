@@ -1,0 +1,21 @@
+[project]
+name = "vistar_engine"
+version = "0.1.0"
+description = "Offline video engine for Vistar Video Agent"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pydantic>=2.6",
+  "pydantic-settings>=2.2",
+  "pyyaml>=6.0",
+  "requests>=2.31",
+  "pillow>=10.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

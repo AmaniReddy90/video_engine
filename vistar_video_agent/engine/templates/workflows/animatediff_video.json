@@ -1,0 +1,14 @@
+{
+  "prompt": {
+    "prompt": "${prompt}",
+    "negative_prompt": "${negative_prompt}",
+    "seed": "${seed}",
+    "width": "${width}",
+    "height": "${height}",
+    "checkpoint": "${checkpoint}",
+    "steps": 20,
+    "cfg": 7.0,
+    "sampler": "euler_a",
+    "frames": 24
+  }
+}
