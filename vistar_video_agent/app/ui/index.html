@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vistar Video Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Vistar Video Agent</h1>
+      <p class="status">Engine status: <span id="engine-status">Checking...</span></p>
+    </div>
+    <div class="header-actions">
+      <button id="reload-ui">Reload UI</button>
+      <button id="open-vault">Open Vault Folder</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="generator">Generator</button>
+    <button class="tab" data-tab="models">Model Manager</button>
+    <button class="tab" data-tab="diagnostics">Diagnostics</button>
+  </nav>
+
+  <main>
+    <section id="tab-generator" class="tab-panel active">
+      <div class="panel">
+        <h2>Film Spec (YAML/JSON)</h2>
+        <p class="hint">Paste a valid Film Spec. Use JSON or YAML with version, title, targets, and scenes.</p>
+        <textarea id="film-spec" placeholder="Paste Film Spec here..."></textarea>
+        <div class="hint-grid">
+          <div>
+            <h3>Input checklist</h3>
+            <ul>
+              <li>Include <code>version</code>, <code>title</code>, and at least one scene.</li>
+              <li>Ensure each scene has beats or dialogue lines.</li>
+              <li>Set targets for <code>shorts</code> and/or <code>full</code>.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Format tips</h3>
+            <ul>
+              <li>Durations auto-clamp to platform limits.</li>
+              <li>Voice/music toggles in the spec control audio layers.</li>
+              <li>Use rich prompts in scene summaries and beats.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="validate-spec">Validate</button>
+          <button id="create-project">Create Project</button>
+          <button id="run-pipeline">Generate</button>
+        </div>
+        <div class="status-grid">
+          <div>
+            <h3>Project</h3>
+            <p id="project-id">Not created</p>
+          </div>
+          <div>
+            <h3>Job Status</h3>
+            <p id="job-status">Idle</p>
+            <progress id="job-progress" value="0" max="1"></progress>
+          </div>
+          <div>
+            <h3>Pipeline Stage</h3>
+            <p id="job-stage">Awaiting start</p>
+            <ol id="stage-list" class="stage-list">
+              <li data-stage="plan">Plan</li>
+              <li data-stage="render">Render</li>
+              <li data-stage="stitch">Stitch</li>
+              <li data-stage="audio">Audio</li>
+              <li data-stage="export">Export</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h2>Logs</h2>
+          <pre id="job-logs">No logs yet.</pre>
+        </div>
+
+        <div class="panel">
+          <h2>Outputs</h2>
+          <p class="hint">Stitching runs after render; outputs appear once stitching completes.</p>
+          <ul id="output-list">
+            <li>Outputs will appear after generation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-models" class="tab-panel">
+      <div class="panel">
+        <h2>Model Registry</h2>
+        <label>Backend Mode
+          <select id="model-mode">
+            <option value="procedural">Procedural</option>
+            <option value="comfyui">ComfyUI</option>
+          </select>
+        </label>
+        <label>ComfyUI URL
+          <input id="comfyui-url" type="text" placeholder="http://127.0.0.1:8188" />
+        </label>
+        <label>Checkpoint Name
+          <input id="sd-checkpoint" type="text" placeholder="sdxl_base_1.0.safetensors" />
+        </label>
+        <label>AnimateDiff Workflow Path
+          <input id="animatediff-workflow" type="text" placeholder="C:\\VISTAR_MODELS\\workflows\\animatediff.json" />
+        </label>
+        <label>TTS Model Path
+          <input id="tts-model" type="text" placeholder="C:\\VISTAR_MODELS\\tts\\en.onnx" />
+        </label>
+        <label>TTS Engine (piper, custom)
+          <input id="tts-engine" type="text" placeholder="piper" />
+        </label>
+        <label>TTS Binary Path
+          <input id="tts-binary" type="text" placeholder="C:\\VISTAR_MODELS\\tts\\piper.exe" />
+        </label>
+        <label>Music Model Path (gguf/pt/safetensors)
+          <input id="music-model" type="text" placeholder="C:\\VISTAR_MODELS\\music\\model.gguf" />
+        </label>
+        <label>Music Track Path (wav/mp3/flac/ogg/m4a, auto-converted)
+          <input id="music-track" type="text" placeholder="C:\\VISTAR_MODELS\\music\\track.wav" />
+        </label>
+        <div class="actions">
+          <button id="save-models">Save</button>
+          <button id="test-image">Test Image</button>
+          <button id="test-tts">Test TTS</button>
+          <button id="test-music">Test Music</button>
+        </div>
+        <pre id="model-errors"></pre>
+      </div>
+    </section>
+
+    <section id="tab-diagnostics" class="tab-panel">
+      <div class="panel">
+        <h2>Diagnostics</h2>
+        <button id="refresh-diagnostics">Refresh</button>
+        <ul id="diagnostics-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
